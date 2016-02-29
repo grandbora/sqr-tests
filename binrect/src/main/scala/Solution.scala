@@ -14,35 +14,39 @@ object Solution extends App {
           matrix.head.length * matrix.length
         else {
 
-          // COLS
-
-          val firstZeroX = matrix(firstZeroY).indexOf(0)
-          val dropBeforeColsMatrix = matrix.map(_.drop(firstZeroX + 1))
-          val dropBeforeColsMatrixArea = largestArea(dropBeforeColsMatrix)
-
-          val dropAfterColsMatrix = matrix.map(row => row.dropRight(row.length - firstZeroX))
-          val dropAfterColsMatrixArea = largestArea(dropAfterColsMatrix)
-
-          // ROWS
-
-          val dropBeforeRowsMatrix = matrix.drop(firstZeroY + 1)
-          val dropBeforeRowsMatrixArea = largestArea(dropBeforeRowsMatrix)
-
-          val dropAfterRowsMatrix = matrix.dropRight(matrix.length - firstZeroY)
-          val dropAfterRowsMatrixArea = largestArea(dropAfterRowsMatrix)
+          val columnWiseLargestAreaValue = columnWiseLargestArea(matrix,firstZeroY)
+          val rowWiseLargestAreaValue = rowWiseLargestAre(matrix, firstZeroY)
 
           Math.max(
-            Math.max(dropBeforeColsMatrixArea, dropAfterColsMatrixArea),
-            Math.max(dropBeforeRowsMatrixArea, dropAfterRowsMatrixArea)
+            columnWiseLargestAreaValue,
+            rowWiseLargestAreaValue
           )
         }
-
     }
   }
 
+  private def columnWiseLargestArea(matrix: List[List[Int]], firstZeroY:Int): Int = {
+    val firstZeroX = matrix(firstZeroY).indexOf(0)
+
+    val dropBeforeColsMatrix = matrix.map(_.drop(firstZeroX + 1))
+    val dropBeforeColsMatrixArea = largestArea(dropBeforeColsMatrix)
+
+    val dropAfterColsMatrix = matrix.map(row => row.dropRight(row.length - firstZeroX))
+    val dropAfterColsMatrixArea = largestArea(dropAfterColsMatrix)
+
+    Math.max(dropBeforeColsMatrixArea, dropAfterColsMatrixArea)
+  }
+
+  private def rowWiseLargestAre(matrix: List[List[Int]], firstZeroY: Int): Int = {
+    val dropBeforeRowsMatrix = matrix.drop(firstZeroY + 1)
+    val dropBeforeRowsMatrixArea = largestArea(dropBeforeRowsMatrix)
+
+    val dropAfterRowsMatrix = matrix.dropRight(matrix.length - firstZeroY)
+    val dropAfterRowsMatrixArea = largestArea(dropAfterRowsMatrix)
+    Math.max(dropBeforeRowsMatrixArea, dropAfterRowsMatrixArea)
+  }
+
 }
-
-
 
 
 
